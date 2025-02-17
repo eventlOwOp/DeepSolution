@@ -1,0 +1,51 @@
+[
+    {
+        "id": 0,
+        "title": "Design of an ultra-low emission retrofit plan for 3 × 150 t/h coal-fired boilers",
+        "requirement": "Design of an ultra-low emission retrofit plan for 3 × 150 t/h coal-fired boilers Under the strict requirements for nitrogen oxides, sulfur dioxide, and dust emissions, complete the ultra-low emission transformation task for three 150 t/h coal-fired boilers to meet environmental emission standards, i.e., NOx emissions not exceeding 45 mg/m³ (standard), SO2 emissions not exceeding 28 mg/m³ (standard), and dust emissions not exceeding 8 mg/m³ (standard).",
+        "solution": "This paper proposes an ultra-low emission retrofit plan for 3 × 150 t/h coal-fired boilers. Specifically, firstly, considering the challenge of high original nitrogen oxide emissions, low-NOx combustion retrofit technology is applied to the boiler, reducing the original NOx emissions to 140 mg/m³ (standard) through water-cooled air chambers, secondary air systems, and water-cooled wall replacement, and achieving a compliant emission of 45 mg/m³ after SNCR. Secondly, addressing the issue of significant fluctuations in SO2 emissions, the limestone automatic feeding system is improved to enhance feeding timeliness and control accuracy, enabling SO2 emissions of no more than 28 mg/m³ with in-furnace desulfurization alone. Lastly, to tackle the problem of excessive dust emissions, new ultra-low emission filter bag dust removal technology is employed, achieving compliant dust emissions with concentrations below 8 mg/m³ (standard) by replacing the filter bags.",
+        "analysis_ids": [
+          "0_analysis_0",
+          "0_analysis_1",
+          "0_analysis_2"
+        ],
+        "technology_ids": [
+          "0_technology_0",
+          "0_technology_1",
+          "0_technology_2"
+        ],
+        "explanation": [
+          {
+            "idx": "explanation0",
+            "content": "For analysis0, considering the challenge of high original nitrogen oxide emissions, low-NOx combustion retrofit technology was used for the boiler. Significant NOx emission reductions were achieved through modifications such as the water-cooled wind chamber and the circulating material system."
+          },
+          {
+            "idx": "explanation1",
+            "content": "For analysis1, considering the challenges of SO2 emission fluctuations and exceeding standards, the limestone automatic feeding system improvement technology is used to achieve stable control of SO2 emissions by optimizing the feeding system and control logic."
+          },
+          {
+            "idx": "explanation2",
+            "content": "For analysis2, considering the challenge of excessive dust emissions, adopt the new ultra-low emission filter bag dust removal technology. By replacing the filter bags, improve dust removal efficiency and achieve compliant dust emissions."
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "title": "Design of capacity expansion and renovation scheme for the wet flue gas desulfurization system of a 3 × 210 MW coal-fired power plant",
+        "requirement": "Design of capacity expansion and renovation scheme for the wet flue gas desulfurization system of a 3 × 210 MW coal-fired power plant Under Turkey's strict environmental standards and the conditions of burning high-sulfur coal, completing the capacity expansion and renovation of the 3 × 210 MW desulfurization unit requires achieving a desulfurization efficiency of 97.5% and completing the task on the existing facilities.",
+        "solution": "This article proposes a solution to improve desulfurization efficiency by modifying the absorption tower and its auxiliary systems on the basis of existing facilities. Specifically, first, considering the need to increase the desulfurization efficiency to 97.5%, absorption tower modification technology is used to achieve a high conversion rate from CaSO3 to CaSO4 by increasing the absorption tower slurry pool volume and optimizing the spraying system. Second, a vacuum belt dehydrator is added to improve the efficiency of the gypsum dehydration system, further ensuring that the modified system meets stricter environmental standards.",
+        "analysis_ids": [
+          "1_analysis_0"
+        ],
+        "technology_ids": [
+          "1_technology_0",
+          "1_technology_1"
+        ],
+        "explanation": [
+          {
+            "idx": "explanation0",
+            "content": "For analysis0, considering the environmental protection standards and the increase in sulfur content of coal, technology0 was used to meet the requirements of improving desulfurization efficiency by raising the absorption tower slurry pool and optimizing the stirring and spraying systems."
+          }
+        ]
+      }
+]
