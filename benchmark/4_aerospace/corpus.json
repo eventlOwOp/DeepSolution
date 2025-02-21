@@ -397,11 +397,11 @@
     },
     {
         "id": "14_technology_0",
-        "content": "Multi-objective optimization design方案 This technology is applicable to distributed electric propulsion aircraft with reduced wing area, comprehensively considering the optimal lift-to-drag ratio during cruise and minimizing takeoff and landing power. The optimal design scheme is generated using the NSGA2 optimization algorithm."
+        "content": "Multi-objective optimization design solution This technology is applicable to distributed electric propulsion aircraft with reduced wing area, comprehensively considering the optimal lift-to-drag ratio during cruise and minimizing takeoff and landing power. The optimal design scheme is generated using the NSGA2 optimization algorithm."
     },
     {
         "id": "14_technology_1",
-        "content": "Single-objective optimization design方案 Applicable to distributed electric propulsion aircraft with consistent wing area, optimizing only the cruise performance, and generating the optimal design plan through the DIRECT global optimization algorithm."
+        "content": "Single-objective optimization design solution Applicable to distributed electric propulsion aircraft with consistent wing area, optimizing only the cruise performance, and generating the optimal design plan through the DIRECT global optimization algorithm."
     },
     {
         "id": "14_technology_2",

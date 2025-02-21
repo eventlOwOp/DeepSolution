@@ -173,7 +173,7 @@
     },
     {
         "id": "6_technology_3",
-        "content": "Anti-slip pile treatment technology This technology is applicable for localized reinforcement measures in landslide治理, utilizing anti-slide piles embedded in the moderately weathered layer and constructed with high-strength materials to provide stable support, effectively enhancing the slope's resistance to sliding."
+        "content": "Anti-slip pile treatment technology This technology is applicable for localized reinforcement measures in landslide, utilizing anti-slide piles embedded in the moderately weathered layer and constructed with high-strength materials to provide stable support, effectively enhancing the slope's resistance to sliding."
     },
     {
         "id": "6_technology_4",
@@ -577,7 +577,7 @@
     },
     {
         "id": "20_analysis_2",
-        "content": "The tunnel entrance is prone to偏压 phenomena due to complex terrain, especially in areas with steep topography or developed hazardous rockfalls. Under these conditions, the design will face the challenge of relying on human experience for identifying portal biases, which is inefficient and may lead to increased project costs and operational risks."
+        "content": "The tunnel entrance is prone to phenomena due to complex terrain, especially in areas with steep topography or developed hazardous rockfalls. Under these conditions, the design will face the challenge of relying on human experience for identifying portal biases, which is inefficient and may lead to increased project costs and operational risks."
     },
     {
         "id": "20_technology_0",
@@ -697,7 +697,7 @@
     },
     {
         "id": "24_technology_2",
-        "content": "Weighted Average Method This method is applicable to the calculation of the comprehensive score, combining the weights and scores of various evaluation indicators to obtain a comprehensive score for the green highway routes, which is used for the quantitative evaluation and ranking of the方案."
+        "content": "Weighted Average Method This method is applicable to the calculation of the comprehensive score, combining the weights and scores of various evaluation indicators to obtain a comprehensive score for the green highway routes, which is used for the quantitative evaluation and ranking of the solution."
     },
     {
         "id": "24_technology_3",
@@ -1117,7 +1117,7 @@
     },
     {
         "id": "40_technology_2",
-        "content": "Excavation plan after the circuit is interrupted. This technology is suitable for branch railways with lower technical standards and fewer trains. By temporarily blocking the railway for a short period, open excavation construction of the underpass bridge can be completed. This方案 has a short construction cycle (theoretically taking 16 hours) and minimal impact time on the railway, but requires a high level of organizational capability from the construction unit."
+        "content": "Excavation plan after the circuit is interrupted. This technology is suitable for branch railways with lower technical standards and fewer trains. By temporarily blocking the railway for a short period, open excavation construction of the underpass bridge can be completed. This solution has a short construction cycle (theoretically taking 16 hours) and minimal impact time on the railway, but requires a high level of organizational capability from the construction unit."
     },
     {
         "id": "41_analysis_0",
@@ -1773,7 +1773,7 @@
     },
     {
         "id": "64_analysis_1",
-        "content": "the exit traffic volume of the mainline ramp and connecting ramp in the甲-丙 direction is large (QR=2581 pcu/h), and the total traffic volume in the merge area after the acceleration lane [LA=400m] reaches QR12=4359.4 pcu/h, exceeding the reference standard value of CR12=3600. Under these conditions, the merging ramp may lead to traffic concentration, affecting the stability of mainline traffic and posing a certain risk of traffic congestion, necessitating the optimization of service levels to meet traffic demands."
+        "content": "the exit traffic volume of the mainline ramp and connecting ramp in the direction is large (QR=2581 pcu/h), and the total traffic volume in the merge area after the acceleration lane [LA=400m] reaches QR12=4359.4 pcu/h, exceeding the reference standard value of CR12=3600. Under these conditions, the merging ramp may lead to traffic concentration, affecting the stability of mainline traffic and posing a certain risk of traffic congestion, necessitating the optimization of service levels to meet traffic demands."
     },
     {
         "id": "64_analysis_2",
@@ -1949,7 +1949,7 @@
     },
     {
         "id": "70_technology_2",
-        "content": "Comprehensive Rating Evaluation System This technology is applicable for方案比选和优化设计, by setting four indicators: linearity, economy, energy saving, and environmental protection, each assigned a weight (linearity 0.3, economy 0.25, energy saving 0.2, environmental protection 0.25), using a scoring method to evaluate the pros and cons of the方案."
+        "content": "Comprehensive Rating Evaluation System This technology is applicable for solution design, by setting four indicators: linearity, economy, energy saving, and environmental protection, each assigned a weight (linearity 0.3, economy 0.25, energy saving 0.2, environmental protection 0.25), using a scoring method to evaluate the pros and cons of the solution."
     },
     {
         "id": "71_analysis_0",
@@ -2997,7 +2997,7 @@
     },
     {
         "id": "107_technology_0",
-        "content": "Further optimization of the original hub design方案 This technology is suitable for the compatible design of existing reserved ramps. By merging ramp entrances, it reduces flow interference in continuous entrance sections of the mainline, avoids the need for widening the existing mainline bridge of the Changhe Expressway, and reduces the land use scale while meeting service functions, saving an investment of 50 million yuan."
+        "content": "Further optimization of the original hub design solution This technology is suitable for the compatible design of existing reserved ramps. By merging ramp entrances, it reduces flow interference in continuous entrance sections of the mainline, avoids the need for widening the existing mainline bridge of the Changhe Expressway, and reduces the land use scale while meeting service functions, saving an investment of 50 million yuan."
     },
     {
         "id": "107_technology_1",
@@ -3025,11 +3025,11 @@
     },
     {
         "id": "108_technology_1",
-        "content": "Pear-shaped interchange design方案 This plan is suitable for a two-level interchange in complex terrain and land-restricted areas, where the design speed of the left-turn ramp is 50 km/h. The ramp towards Neijiang is placed outside, and the exit ramp towards Chengdu is retracted inward, reducing land occupation and the scale of bridges, which is conducive to saving and efficiently utilizing land. However, the earthwork project is relatively large."
+        "content": "Pear-shaped interchange design solution This plan is suitable for a two-level interchange in complex terrain and land-restricted areas, where the design speed of the left-turn ramp is 50 km/h. The ramp towards Neijiang is placed outside, and the exit ramp towards Chengdu is retracted inward, reducing land occupation and the scale of bridges, which is conducive to saving and efficiently utilizing land. However, the earthwork project is relatively large."
     },
     {
         "id": "108_technology_2",
-        "content": "External cross T-shaped interchange方案 This solution is suitable for three-level interchanges that require reducing land use and optimizing ramp structures. With a ramp design speed of 50km/h or 60km/h, it achieves land conservation requirements, reduces project scale, and improves traffic transition capacity by compressing ineffective areas in the triangular zone and optimizing bridge layouts."
+        "content": "External cross T-shaped interchange solution This solution is suitable for three-level interchanges that require reducing land use and optimizing ramp structures. With a ramp design speed of 50km/h or 60km/h, it achieves land conservation requirements, reduces project scale, and improves traffic transition capacity by compressing ineffective areas in the triangular zone and optimizing bridge layouts."
     },
     {
         "id": "109_analysis_0",

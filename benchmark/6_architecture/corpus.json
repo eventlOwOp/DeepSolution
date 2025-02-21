@@ -817,7 +817,7 @@
     },
     {
         "id": "27_technology_1",
-        "content": "获取平面图 This technology is applicable to generating floor plan design renderings and 3D rendering. Based on uploaded 2D floor plans, it utilizes an AI rendering engine to automatically generate a 3D full-color floor model for project reporting and sales display, completing the entire process within 30 minutes."
+        "content": "floor plan. This technology is applicable to generating floor plan design renderings and 3D rendering. Based on uploaded 2D floor plans, it utilizes an AI rendering engine to automatically generate a 3D full-color floor model for project reporting and sales display, completing the entire process within 30 minutes."
     },
     {
         "id": "27_technology_2",
@@ -1581,7 +1581,7 @@
     },
     {
         "id": "54_technology_0",
-        "content": "Non-full flow design方案 This technology is applicable for improving drainage capacity and gas emission efficiency. In mountainous sewage pipeline design, by ensuring the pipeline fill level is between 0.55 and 0.75, the discharge capacity is enhanced, better meeting drainage demands under extreme conditions."
+        "content": "Non-full flow design solution This technology is applicable for improving drainage capacity and gas emission efficiency. In mountainous sewage pipeline design, by ensuring the pipeline fill level is between 0.55 and 0.75, the discharge capacity is enhanced, better meeting drainage demands under extreme conditions."
     },
     {
         "id": "54_technology_1",
@@ -3393,7 +3393,7 @@
     },
     {
         "id": "116_technology_1",
-        "content": "Corner processing technology This technology is applicable to the corner areas of climbing frame structures. By setting steel pipes at the bottom truss corners, the upper and lower intersecting steel pipes are connected in a \"井\"-shaped pattern to enhance corner rigidity and improve the overall stability of the frame."
+        "content": "Corner processing technology This technology is applicable to the corner areas of climbing frame structures. By setting steel pipes at the bottom truss corners, the upper and lower intersecting steel pipes are connected in a square-shaped pattern to enhance corner rigidity and improve the overall stability of the frame."
     },
     {
         "id": "116_technology_2",

@@ -47,7 +47,7 @@
     "id": 2,
     "title": "Design and Application of Comprehensive Gas Management Plan for Working Face 3412",
     "requirement": "Design and Application of Comprehensive Gas Management Plan for Working Face 3412 Under the conditions of high gas content, high gas pressure, and complex coal seam structure, complete the gas management tasks during the excavation and recovery of the 3412 working face.",
-    "solution": "This article proposes a comprehensive gas management方案. Specifically, first, considering the threat of high gas content and pressure, techniques such as advanced pre-drainage before tunnel excavation, coal seam extraction during excavation, and extraction of fractured zones and upper corners during coal recovery are employed. Efficient extraction is achieved through scientifically arranged drilling. Secondly, in response to the difficulties posed by complex coal seam structures, the extraction effect is ensured by optimizing drilling parameters and sealing processes. Ultimately, the gas extraction purity at the working face reaches 6.31 m³/min, with a pre-drainage efficiency of 43.1% and an extraction concentration of 26% to 33%.",
+    "solution": "This article proposes a comprehensive gas management solution. Specifically, first, considering the threat of high gas content and pressure, techniques such as advanced pre-drainage before tunnel excavation, coal seam extraction during excavation, and extraction of fractured zones and upper corners during coal recovery are employed. Efficient extraction is achieved through scientifically arranged drilling. Secondly, in response to the difficulties posed by complex coal seam structures, the extraction effect is ensured by optimizing drilling parameters and sealing processes. Ultimately, the gas extraction purity at the working face reaches 6.31 m³/min, with a pre-drainage efficiency of 43.1% and an extraction concentration of 26% to 33%.",
     "analysis_ids": [
       "2_analysis_0",
       "2_analysis_1"
@@ -142,7 +142,7 @@
     "id": 6,
     "title": "Analysis of the design plan for the newly constructed coal preparation plant by Yiyuan Coal Industry.",
     "requirement": "Analysis of the design plan for the newly constructed coal preparation plant by Yiyuan Coal Industry. Under the conditions of high ash and high sulfur content in raw coal and significant fluctuations in coal quality, complete the processing task of washing 1.8 million tons of raw coal annually, producing various products such as chemical coal, blast furnace injection coal, and electrical coal.",
-    "solution": "This article proposes a联合洗选工艺方案 based on dense medium separation. Specifically, the raw coal is first screened and crushed to -150mm, followed by classification and de-dusting of the 3mm fraction. Secondly, the 150~50mm lump coal is separated using a dense medium shallow trough, while the 50~3mm fine coal is separated using a three-product dense medium cyclone, and the -3mm coal is directly used as thermal coal products. Finally, coarse coal slurry is recovered using a concentration classification cyclone, vibrating arc screen, and coal slurry centrifuge, while fine coal slurry is recovered using a concentration pressure filter. This process can effectively address the issues of high ash and high sulfur content in raw coal, as well as significant fluctuations in coal quality, producing various products that meet requirements.",
+    "solution": "This article proposes a Joint washing process plan based on dense medium separation. Specifically, the raw coal is first screened and crushed to -150mm, followed by classification and de-dusting of the 3mm fraction. Secondly, the 150~50mm lump coal is separated using a dense medium shallow trough, while the 50~3mm fine coal is separated using a three-product dense medium cyclone, and the -3mm coal is directly used as thermal coal products. Finally, coarse coal slurry is recovered using a concentration classification cyclone, vibrating arc screen, and coal slurry centrifuge, while fine coal slurry is recovered using a concentration pressure filter. This process can effectively address the issues of high ash and high sulfur content in raw coal, as well as significant fluctuations in coal quality, producing various products that meet requirements.",
     "analysis_ids": [
       "6_analysis_0",
       "6_analysis_1"
@@ -214,8 +214,8 @@
   },
   {
     "id": 9,
-    "title": "Design of the hydraulic fracturing roof control and pressure relief方案 for the return airway of the Dongzhou Coal Mine 5102.",
-    "requirement": "Design of the hydraulic fracturing roof control and pressure relief方案 for the return airway of the Dongzhou Coal Mine 5102. Under the conditions of a hard roof and a complex stress environment at the working face, complete the task of pressure relief and control of the roof in the 5102 return air lane, aiming to reduce the hanging roof in the triangular area at the end of the working face, achieving immediate collapse upon mining.",
+    "title": "Design of the hydraulic fracturing roof control and pressure relief solution for the return airway of the Dongzhou Coal Mine 5102.",
+    "requirement": "Design of the hydraulic fracturing roof control and pressure relief solution for the return airway of the Dongzhou Coal Mine 5102. Under the conditions of a hard roof and a complex stress environment at the working face, complete the task of pressure relief and control of the roof in the 5102 return air lane, aiming to reduce the hanging roof in the triangular area at the end of the working face, achieving immediate collapse upon mining.",
     "solution": "This article proposes a hydraulic fracturing top-slicing depressurization control scheme. Specifically, first, considering the difficult conditions of the hard roof, hydraulic fracturing technology is used to achieve layered and segmented collapse through fracturing and softening the roof. Second, in response to the complex stress environment, a reasonable single-row drilling layout is adopted. Combined with hydraulic fracturing technology and controlled by scientific construction parameters, the degree of stress concentration around the roadway is successfully reduced, ensuring that the surrounding rock of the roadway is in a low-pressure zone, which guarantees safe production in the mine.",
     "analysis_ids": [
       "9_analysis_0",
@@ -411,7 +411,7 @@
     "id": 17,
     "title": "Design of the monitoring plan for open-pit slope at the Just Bofo mine.",
     "requirement": "Design of the monitoring plan for open-pit slope at the Just Bofo mine. Under the conditions of complex overturning structures, rock mass fragmentation, and rainy weather, complete the monitoring and early warning tasks for slope landslides in open-pit mines, requiring real-time monitoring of slope deformation and effective early warning.",
-    "solution": "This article proposes a monitoring and early warning方案 based on slope radar. Specifically, first, considering the complex overturning structure and fractured rock conditions, implicit modeling and numerical simulation techniques were used to determine that the slope exhibits progressive retreat landslide characteristics; secondly, in response to the effects of rainy weather, slope radar technology was selected, achieving real-time monitoring of the slope through its high precision of 0.1mm, long-distance monitoring capability of 5km, and all-weather operational characteristics; finally, one slope radar was installed on each of the high platforms on the north and south sides of the mining area, along with lightning protection, power supply, and communication facilities, forming a complete monitoring and early warning system.",
+    "solution": "This article proposes a monitoring and early warning solution based on slope radar. Specifically, first, considering the complex overturning structure and fractured rock conditions, implicit modeling and numerical simulation techniques were used to determine that the slope exhibits progressive retreat landslide characteristics; secondly, in response to the effects of rainy weather, slope radar technology was selected, achieving real-time monitoring of the slope through its high precision of 0.1mm, long-distance monitoring capability of 5km, and all-weather operational characteristics; finally, one slope radar was installed on each of the high platforms on the north and south sides of the mining area, along with lightning protection, power supply, and communication facilities, forming a complete monitoring and early warning system.",
     "analysis_ids": [
       "17_analysis_0",
       "17_analysis_1",
@@ -441,7 +441,7 @@
     "id": 18,
     "title": "Design of the mining plan after water discharge in the secondary mining area of Beiyangzhuang Mine.",
     "requirement": "Design of the mining plan after water discharge in the secondary mining area of Beiyangzhuang Mine. Under the conditions of severe water inflow and a significant increase in water volume in the eastern wing transport tunnel of the second mining area, complete the safe mining task of the second mining area, which is designed with a production capacity of 1.8 Mt/a for the mine and 1.2 million t/a for the second mining area.",
-    "solution": "This article proposes a comprehensive治理方案. Specifically, first, considering the serious water inrush causing flooding in the eastern wing transportation roadway of the second mining area, ground grouting technology is used to block the water discharge points, fundamentally addressing the problem; second, in response to the significant increase in water inflow, a drainage system was designed to directly discharge to the ground, establishing a drainage capability of 4,400 m³/h by configuring 8 MD450-90×7 water pumps and 4 φ377×15 pipelines, ensuring safe mining conditions in the second mining area.",
+    "solution": "This article proposes a comprehensive solution. Specifically, first, considering the serious water inrush causing flooding in the eastern wing transportation roadway of the second mining area, ground grouting technology is used to block the water discharge points, fundamentally addressing the problem; second, in response to the significant increase in water inflow, a drainage system was designed to directly discharge to the ground, establishing a drainage capability of 4,400 m³/h by configuring 8 MD450-90×7 water pumps and 4 φ377×15 pipelines, ensuring safe mining conditions in the second mining area.",
     "analysis_ids": [
       "18_analysis_0",
       "18_analysis_1"
@@ -788,8 +788,8 @@
   },
   {
     "id": 32,
-    "title": "Design of support方案 for high-inclination coal seam mining roadways",
-    "requirement": "Design of support方案 for high-inclination coal seam mining roadways Under the conditions of a coal seam dip angle of 25° to 45°, with the roof being gray-black sandy shale and medium-grained quartz sandstone, complete the support task for the large-dip coal seam recovery roadway.",
+    "title": "Design of support solution for high-inclination coal seam mining roadways",
+    "requirement": "Design of support solution for high-inclination coal seam mining roadways Under the conditions of a coal seam dip angle of 25° to 45°, with the roof being gray-black sandy shale and medium-grained quartz sandstone, complete the support task for the large-dip coal seam recovery roadway.",
     "solution": "This article presents a combined support scheme of anchor bolts and anchor cables. Specifically, firstly, considering the uneven support issue caused by steep angles, the use of anchor bolts and anchor cables support technology has enhanced the overall stability of the surrounding rock through reasonable parameter design. Secondly, addressing the possible issues of bottom heave and dynamic pressure caused by the characteristics of the roof rock strata, a combined support of anchor bolts and anchor cables has been adopted to improve the overall support effectiveness of the tunnel by reinforcing key areas of the side angles.",
     "analysis_ids": [
       "32_analysis_0",
@@ -837,8 +837,8 @@
   },
   {
     "id": 34,
-    "title": "Design and application of support方案 for the auxiliary transportation lane in the high coal mining workface.",
-    "requirement": "Design and application of support方案 for the auxiliary transportation lane in the high coal mining workface. Under the conditions of high mining height coal seams, poor surrounding rock stability, and large roadway cross-sections, complete the supporting tasks for auxiliary transportation lanes to ensure roadway stability and operational safety.",
+    "title": "Design and application of support solution for the auxiliary transportation lane in the high coal mining workface.",
+    "requirement": "Design and application of support solution for the auxiliary transportation lane in the high coal mining workface. Under the conditions of high mining height coal seams, poor surrounding rock stability, and large roadway cross-sections, complete the supporting tasks for auxiliary transportation lanes to ensure roadway stability and operational safety.",
     "solution": "This article proposes a combination support scheme of anchor bolts, anchor cables, and metal mesh. Specifically, first, considering the characteristics of high mining height and the risk of roof collapse, support techniques for the roof and both sides are applied, achieving stable support through reasonable arrangement of anchor bolts and anchor cables. Second, in response to the issues of low rock mass strength and poor stability, high-strength anchor bolts and anchor cables are used, and scientific support parameter design is implemented to control deformation. Finally, considering the characteristics of large cross-sections, all-around support technology is adopted; through metal mesh coverage and optimization of the anchoring system, the support effect is ensured. Monitoring results indicate that the maximum convergence of the top and bottom plates is 19mm, the convergence on both sides is 14mm, and the anchor bolt load remains stable at 55kN, all within the design allowance range.",
     "analysis_ids": [
       "34_analysis_0",
@@ -867,7 +867,7 @@
   {
     "id": 35,
     "title": "Design of the expansion plan for the return air shaft at Tianyun Coal Mine.",
-    "requirement": "Design of the expansion plan for the return air shaft at Tianyun Coal Mine. Under the conditions of the original main shaft being aged and in disrepair, and needing to significantly expand its cross-section, complete the expansion and transformation task of the return air shaft so that it can承担 the initial return air task of the entire mining operation.",
+    "requirement": "Design of the expansion plan for the return air shaft at Tianyun Coal Mine. Under the conditions of the original main shaft being aged and in disrepair, and needing to significantly expand its cross-section, complete the expansion and transformation task of the return air shaft so that it can handle the initial return air task of the entire mining operation.",
     "solution": "This article proposes a widening scheme for shaft sinking using a vertical shaft tunneling machine. Specifically, considering that aging and disrepair of the shaft may lead to collapse, the MSJ5.8/1000/1000 type vertical shaft tunneling machine and integrated parallel operation technology are adopted, avoiding the safety hazards of traditional blasting construction through mechanized rock breaking and intelligent support; secondly, in response to the construction difficulties of enlarging the cross-section, the efficient performance of the vertical shaft tunneling machine is utilized to achieve fast and safe widening construction.",
     "analysis_ids": [
       "35_analysis_0",
@@ -1067,7 +1067,7 @@
   {
     "id": 43,
     "title": "The application of rock mass classification in the design of support schemes for deep roadway in metal mines.",
-    "requirement": "The application of rock mass classification in the design of support schemes for deep roadway in metal mines. Under the conditions of high stress in deep areas and fragmented surrounding rock, complete the design task for the support方案 of the deep transportation tunnel in the metal mine.",
+    "requirement": "The application of rock mass classification in the design of support schemes for deep roadway in metal mines. Under the conditions of high stress in deep areas and fragmented surrounding rock, complete the design task for the support solution of the deep transportation tunnel in the metal mine.",
     "solution": "This paper proposes a design method for deep roadway support schemes based on rock mass quality classification. Specifically, addressing the stability issues of roadways that may arise from high stress and fractured surrounding rock conditions, the Barton rock mass quality (Q) classification method is first employed to grade the surrounding rock. Joint data is obtained using the measurement line method and analyzed using DIPS software, resulting in a Q value of 2.024, classified as category III surrounding rock. Then, based on the classification results, a combined support scheme of resin anchor bolts + steel strips + metal mesh + shotcrete is designed, with specific parameters including φ20×2000mm anchor bolts, 0.8×0.8m spacing, and 50mm thick sprayed concrete, effectively supporting the deep roadway.",
     "analysis_ids": [
       "43_analysis_0",
@@ -1920,7 +1920,7 @@
       },
       {
         "idx": "explanation1",
-        "content": "For analysis1, considering the simultaneous mining in multiple采区, using technology0 and technology1, reliable isolation between the mining areas has been achieved by setting up water control walls and implementing joint support at key locations."
+        "content": "For analysis1, considering the simultaneous mining in multiple area, using technology0 and technology1, reliable isolation between the mining areas has been achieved by setting up water control walls and implementing joint support at key locations."
       }
     ]
   },
@@ -1951,8 +1951,8 @@
   },
   {
     "id": 81,
-    "title": "Design and implementation of a variable frequency drive方案 for belt conveyors.",
-    "requirement": "Design and implementation of a variable frequency drive方案 for belt conveyors. Under the conditions of dual-machine drive for the belt conveyor, complete the tasks of energy saving and consumption reduction, and improve the intelligence level of the equipment, requiring the realization of variable frequency speed control and load balancing.",
+    "title": "Design and implementation of a variable frequency drive solution for belt conveyors.",
+    "requirement": "Design and implementation of a variable frequency drive solution for belt conveyors. Under the conditions of dual-machine drive for the belt conveyor, complete the tasks of energy saving and consumption reduction, and improve the intelligence level of the equipment, requiring the realization of variable frequency speed control and load balancing.",
     "solution": "This article presents a variable frequency drive solution for belt conveyors based on a master-slave control mode. Specifically, first, to address the inefficiency of traditional starting methods, variable frequency control technology is adopted to achieve energy savings and consumption reduction through smooth startup and precise speed regulation. Secondly, to tackle the load balancing issue in dual-machine drives, a master-slave control mode and a CompactLogix 5000 PLC control system are used to enable synchronous operation and intelligent control of dual motors through ModBus communication and smart control algorithms. Experimental results show that when the coal delivery rate is 1600 t/h, as the coal density increases from 0.41 kg/m³ to 1.2 kg/m³, the energy consumption rate decreases from 0.491 W/kg·m to 0.288 W/kg·m.",
     "analysis_ids": [
       "81_analysis_0",
@@ -2123,8 +2123,8 @@
   },
   {
     "id": 88,
-    "title": "Analysis of low-voltage feeding switch protection technology for mining and design of application方案.",
-    "requirement": "Analysis of low-voltage feeding switch protection technology for mining and design of application方案. Under the harsh conditions of underground coal mines and the presence of numerous interference signals, complete the fault detection and protection tasks for the underground power network, requiring the implementation of protective functions for overload, leakage, short circuit, and phase loss, in accordance with the provisions of the \"Coal Mine Safety Regulations.\"",
+    "title": "Analysis of low-voltage feeding switch protection technology for mining and design of application solution.",
+    "requirement": "Analysis of low-voltage feeding switch protection technology for mining and design of application solution. Under the harsh conditions of underground coal mines and the presence of numerous interference signals, complete the fault detection and protection tasks for the underground power network, requiring the implementation of protective functions for overload, leakage, short circuit, and phase loss, in accordance with the provisions of the \"Coal Mine Safety Regulations.\"",
     "solution": "This paper proposes a protection scheme based on STM32F103RB and μC/OS-II. Specifically, first, considering that harsh underground environments may lead to false activation, a high-performance control chip and compressed sensing sampling technology are used to achieve high system reliability by optimizing the hardware platform and signal acquisition. Second, to address the slow response issue of traditional protection systems, an embedded real-time operating system is adopted, and through software system design, the quick response and stable operation of the protection functions are ensured.",
     "analysis_ids": [
       "88_analysis_0",
