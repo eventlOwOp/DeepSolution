@@ -18,7 +18,7 @@ To further advance the design of complex engineering solutions, we propose a nov
       To further advance the design of complex engineering solutions, we propose a novel system, SolutionRAG, that leverages the tree-based exploration and bi-point thinking mechanism to generate reliable solutions.
     </td>
     <td style="border: none; vertical-align: top;">
-      <img src="utils/head_fig.PNG" alt="Figure" style="max-width: 80%; height: auto;">
+      <img src="utils/head_fig.PNG" alt="Figure" style="max-width: 85%; height: auto;">
     </td>
   </tr>
 </table>
