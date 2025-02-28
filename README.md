@@ -4,10 +4,22 @@ https://arxiv.org/abs/{waiting}
 
 
 ## 0. Introduction
-Designing solutions for complex engineering challenges is crucial in human production activities. 
+<!-- Designing solutions for complex engineering challenges is crucial in human production activities. 
 However, previous research in the retrieval-augmented generation (RAG) field has not sufficiently addressed tasks related to the design of complex engineering solutions. 
 To fill this gap, we introduce a new benchmark, SolutionBench, to evaluate a system’s ability to generate complete and feasible solutions for engineering problems with multiple complex constraints. 
 To further advance the design of complex engineering solutions, we propose a novel system, SolutionRAG, that leverages the tree-based exploration and bi-point thinking mechanism to generate reliable solutions. 
+![](utils/head_fig.PNG) -->
+<div style="display: flex; align-items: center;">
+  <div style="flex: 1;">
+    Designing solutions for complex engineering challenges is crucial in human production activities. 
+    However, previous research in the retrieval-augmented generation (RAG) field has not sufficiently addressed tasks related to the design of complex engineering solutions. 
+    To fill this gap, we introduce a new benchmark, SolutionBench, to evaluate a system’s ability to generate complete and feasible solutions for engineering problems with multiple complex constraints. 
+    To further advance the design of complex engineering solutions, we propose a novel system, SolutionRAG, that leverages the tree-based exploration and bi-point thinking mechanism to generate reliable solutions.
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <img src="utils/head_fig.PNG" alt="Figure" style="max-width: 40%; height: auto;">
+  </div>
+</div>
 
 ## 1. SolutionBench
 The SolutionBench is in ```benchmark```. The constrcution process is as illustrated in the figure, we first collect engineering technical reports about complex solution design from authoritative journals across various engineering fields. Then, based on manually formatted extraction templates, we use powerful LLMs to implement useful content extraction. Finally, after  manually checking and removing redundancy, the extracted content is integrated into a complete benchmark.
