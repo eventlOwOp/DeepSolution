@@ -8,6 +8,7 @@ Designing solutions for complex engineering challenges is crucial in human produ
 However, previous research in the retrieval-augmented generation (RAG) field has not sufficiently addressed tasks related to the design of complex engineering solutions. 
 To fill this gap, we introduce a new benchmark, SolutionBench, to evaluate a system’s ability to generate complete and feasible solutions for engineering problems with multiple complex constraints. 
 To further advance the design of complex engineering solutions, we propose a novel system, SolutionRAG, that leverages the tree-based exploration and bi-point thinking mechanism to generate reliable solutions. 
+
 <img src="utils/head_fig.PNG" style="display: block; margin: 0 auto; width: 400px;" />
 
 ## 1. SolutionBench
