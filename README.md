@@ -1,6 +1,6 @@
 # DeepSolution
 DeepSolution: Boosting Complex Engineering Solution Design via Tree-based Exploration and Bi-point Thinking         
-https://arxiv.org/abs/{waiting}
+https://arxiv.org/abs/{submitted}
 
 
 ## 0. Introduction
