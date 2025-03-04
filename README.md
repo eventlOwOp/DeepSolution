@@ -1,7 +1,8 @@
 # DeepSolution
 DeepSolution: Boosting Complex Engineering Solution Design via Tree-based Exploration and Bi-point Thinking                                           
 https://arxiv.org/abs/2502.20730                                  
-https://huggingface.co/papers/2502.20730
+https://huggingface.co/papers/2502.20730              
+https://huggingface.co/datasets/lzq2021/SolutionBench
 
 
 ## 0. Introduction
@@ -15,7 +16,7 @@ To further advance the design of complex engineering solutions, we propose a nov
 </div>
 
 ## 1. SolutionBench
-The SolutionBench is in ```benchmark```. The constrcution process is as illustrated in the figure, we first collect engineering technical reports about complex solution design from authoritative journals across various engineering fields. Then, based on manually formatted extraction templates, we use powerful LLMs to implement useful content extraction. Finally, after  manually checking and removing redundancy, the extracted content is integrated into a complete benchmark.
+The SolutionBench is in ```benchmark``` or https://huggingface.co/datasets/lzq2021/SolutionBench. The constrcution process is as illustrated in the figure, we first collect engineering technical reports about complex solution design from authoritative journals across various engineering fields. Then, based on manually formatted extraction templates, we use powerful LLMs to implement useful content extraction. Finally, after  manually checking and removing redundancy, the extracted content is integrated into a complete benchmark.
 ![](utils/bench_fig.png)
 
 ## 2. SolutionRAG
