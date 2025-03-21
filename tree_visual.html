@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameTreeRAG 可视化</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 添加 Marked.js 用于 Markdown 渲染 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- 添加 highlight.js 用于代码高亮 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/github.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/highlight.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .tree-container {
+            position: relative;
+            padding: 20px;
+            overflow: visible;
+            transform-origin: center top;
+            transition: transform 0.3s ease;
+        }
+        
+        .node {
+            position: absolute;
+            width: 120px;
+            cursor: pointer;
+            transition: all 0.2s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        .node:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 20;
+        }
+        
+        .node.active {
+            box-shadow: 0 0 0 2px #3b82f6, 0 0 10px rgba(59, 130, 246, 0.5);
+            transform: scale(1.08);
+        }
+        
+        .node-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .node-content {
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .connector {
+            position: absolute;
+            background-color: #94a3b8;
+            width: 2px;
+            transform-origin: 0 0;
+            z-index: 5;
+        }
+
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            width: 300px;
+        }
+
+        .task-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+        }
+
+        .task-item {
+            padding: 8px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            cursor: pointer;
+        }
+
+        .task-item:hover {
+            background-color: #f1f5f9;
+        }
+
+        .task-item.active {
+            background-color: #e0f2fe;
+        }
+
+        .In {
+            background-color: #e0f2fe;
+            border-color: #7dd3fc;
+        }
+
+        .So {
+            background-color: #dcfce7;
+            border-color: #86efac;
+        }
+
+        .Re {
+            background-color: #fef3c7;
+            border-color: #fcd34d;
+        }
+
+        .final-solution {
+            border: 2px solid #f43f5e;
+            box-shadow: 0 0 10px rgba(244, 63, 94, 0.5);
+        }
+
+        .status-running .status-label {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .status-completed .status-label {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .status-failed .status-label {
+            background-color: #ef4444;
+            color: white;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background-color: #e2e8f0;
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        /* 添加详情面板样式 */
+        .detail-panel {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            width: 40%;
+            max-width: 600px;
+            max-height: 50vh;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            overflow-y: auto;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s ease;
+            border: 1px solid #e5e7eb;
+        }
+        
+        /* 添加全屏模式样式 */
+        .detail-panel.fullscreen {
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 100%;
+            max-height: 100vh;
+            border-radius: 0;
+            border: none;
+        }
+        
+        /* 修复全屏和最小化状态的组合样式 */
+        .detail-panel.fullscreen.minimized {
+            height: 60px;
+            max-height: 60px;
+            border-radius: 0;
+            border: none;
+            border-bottom: 3px solid #3b82f6;
+            padding: 12px 20px;
+        }
+
+        .detail-panel.minimized {
+            height: 60px;
+            max-height: 60px;
+            overflow: hidden;
+            padding: 12px 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            border-bottom: 3px solid #3b82f6;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .detail-panel.minimized .markdown-content {
+            display: none;
+        }
+
+        .detail-panel.minimized .panel-header {
+            margin-bottom: 0;
+        }
+
+        /* 美化面板标题和按钮 */
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 12px;
+        }
+
+        .panel-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+            transition: color 0.2s ease;
+        }
+
+        .panel-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-type-badge {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .panel-button {
+            padding: 6px;
+            border-radius: 6px;
+            background-color: #f3f4f6;
+            color: #4b5563;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .panel-button:hover {
+            background-color: #e5e7eb;
+            color: #1f2937;
+            transform: scale(1.05);
+        }
+        
+        /* Markdown 内容样式 */
+        .markdown-content {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .markdown-content h1 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .markdown-content h2 {
+            font-size: 1.25rem;
+            margin-top: 1.25rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .markdown-content h3 {
+            font-size: 1.125rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .markdown-content p {
+            margin-bottom: 1em;
+        }
+        
+        .markdown-content ul, .markdown-content ol {
+            margin-bottom: 1em;
+            padding-left: 1.5rem;
+        }
+        
+        .markdown-content li {
+            margin-bottom: 0.5em;
+        }
+        
+        .markdown-content li p {
+            margin-bottom: 0.5em;
+        }
+        
+        .markdown-content pre {
+            margin-bottom: 1em;
+            white-space: pre-wrap;
+        }
+        
+        .markdown-content code {
+            font-family: monospace;
+            font-size: 0.9em;
+            padding: 0.2em 0.4em;
+            background-color: #f1f5f9;
+            border-radius: 0.25rem;
+        }
+        
+        .markdown-content pre code {
+            padding: 0;
+            background-color: transparent;
+        }
+        
+        /* 美化节点样式 */
+        .node-badge {
+            font-size: 0.65rem;
+            padding: 0.1rem 0.3rem;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+        
+        /* 添加过渡效果 */
+        .detail-panel {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s ease;
+        }
+        
+        .opacity-0 {
+            opacity: 0;
+        }
+        
+        /* 添加节点激活状态的过渡效果 */
+        .node {
+            transition: all 0.2s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .node.active {
+            transform: scale(1.08);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8 text-center">GameTreeRAG 可视化</h1>
+        
+        <div class="controls bg-white rounded-xl shadow-lg p-6 space-y-4">
+            <div class="relative">
+                <input type="text" 
+                       id="query-input" 
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                       placeholder="输入查询...">
+            </div>
+            
+            <button id="submit-query" 
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                <span>提交查询</span>
+            </button>
+            
+            <div class="space-y-2">
+                <h3 class="font-medium text-gray-700">任务列表</h3>
+                <div id="task-list" class="max-h-[300px] overflow-y-auto rounded-lg border border-gray-200 divide-y divide-gray-200">
+                    <!-- 任务项会动态插入这里 -->
+                </div>
+            </div>
+            
+            <div class="flex gap-2">
+                <button id="refresh-tasks" 
+                        class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                    刷新任务
+                </button>
+                <button id="refresh-tree" 
+                        class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                    刷新树
+                </button>
+            </div>
+        </div>
+    
+    <div class="tree-container" id="tree-container"></div>
+    
+    <!-- 修改详情面板结构，使用新的样式类 -->
+    <div class="detail-panel" id="detail-panel">
+        <div class="panel-header">
+            <h3 class="panel-title" id="detail-title">节点详情</h3>
+            <div class="panel-controls">
+                <div class="panel-type-badge bg-blue-100 text-blue-700" id="detail-type">类型</div>
+                <button id="toggle-minimize" class="panel-button" title="最小化">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <button id="toggle-fullscreen" class="panel-button" title="切换全屏">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 01-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 010-2h1.586l-2.293-2.293a1 1 0 111.414-1.414L15 13.586V12a1 1 0 011-1z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="markdown-content" id="detail-content">
+            <p class="text-gray-500">请点击树节点查看详情</p>
+        </div>
+    </div>
+    </div>
+    
+    <script>
+        // 当前选中的任务ID
+        let currentTaskId = null;
+        
+        // 当前选中的节点ID
+        let currentNodeId = null;
+        
+        // 初始树数据
+        let treeData = [];
+        
+        // 添加一个全局变量来存储上一次的树结构哈希值
+        let lastTreeHash = null;
+        
+        // 添加计算树结构哈希的函数
+        function calculateTreeHash(nodes) {
+            // 创建一个简化的树结构用于哈希计算
+            const simplifiedTree = nodes.map(node => ({
+                id: node.id,
+                father: node.father,
+                flag: node.flag,
+                isFinal: node.isFinal
+            }));
+            
+            // 按节点ID排序，确保相同结构的树生成相同的哈希
+            simplifiedTree.sort((a, b) => a.id - b.id);
+            
+            // 将树结构转换为字符串并返回
+            return JSON.stringify(simplifiedTree);
+        }
+        
+        // 构建树结构
+        function buildTree(data) {
+            const map = {};
+            const rootNodes = [];
+            
+            // 先将所有节点映射到id
+            data.forEach(node => {
+                map[node.id] = {
+                    ...node,
+                    children: []
+                };
+            });
+            
+            // 构建树结构
+            data.forEach(node => {
+                if (node.father === null) {
+                    rootNodes.push(map[node.id]);
+                } else if (map[node.father]) {
+                    map[node.father].children.push(map[node.id]);
+                }
+            });
+            
+            return rootNodes;
+        }
+        
+        // 递归渲染树
+        function renderTree(container, nodes, level = 0, parentLeft = 0) {
+            const nodeHeight = 60;
+            const verticalGap = 60;
+            const horizontalGap = 40;
+            const nodeWidth = 120;
+            const minLeftOffset = 50;
+
+            // 计算当前层级所有节点的总宽度
+            function calculateNodeWidth(node) {
+                if (node.children.length === 0) {
+                    return nodeWidth;
+                }
+                const childrenWidth = node.children.reduce((sum, child) => 
+                    sum + calculateNodeWidth(child), 0);
+                return Math.max(nodeWidth, childrenWidth + (node.children.length - 1) * horizontalGap);
+            }
+
+            // 计算当前层所有节点的总宽度
+            const totalWidth = nodes.reduce((sum, node) => 
+                sum + calculateNodeWidth(node), 0) + 
+                (nodes.length - 1) * horizontalGap;
+
+            let currentLeft = Math.max(minLeftOffset, parentLeft - totalWidth / 2);
+            const top = level * (nodeHeight + verticalGap);
+
+            nodes.forEach(node => {
+                const nodeElement = document.createElement('div');
+                const nodeType = node.title.split(' ')[0];
+                
+                // 美化节点样式
+                nodeElement.className = `node transition-all duration-300 p-3 ${getNodeTypeClasses(nodeType)}`;
+                
+                if (node.isFinal) {
+                    nodeElement.className += ' ring-2 ring-rose-500 ring-offset-2';
+                }
+                
+                nodeElement.id = `node-${node.id}`;
+                nodeElement.setAttribute('data-node-id', node.id);
+                nodeElement.setAttribute('data-node-type', nodeType);
+                nodeElement.setAttribute('data-node-title', node.title);
+                nodeElement.setAttribute('data-node-content', node.content);
+                nodeElement.setAttribute('data-is-final', node.isFinal);
+                
+                // 获取节点ID和类型标签
+                const nodeId = node.id;
+                let typeBadge = '';
+                let badgeClass = '';
+                
+                // 更新节点类型标签
+                switch (nodeType) {
+                    case 'In':
+                        typeBadge = '问题';
+                        badgeClass = 'bg-blue-100 text-blue-700';
+                        break;
+                    case 'So':
+                        typeBadge = '解决方案';
+                        badgeClass = 'bg-green-100 text-green-700';
+                        break;
+                    case 'Re':
+                        typeBadge = '反思';
+                        badgeClass = 'bg-amber-100 text-amber-700';
+                        break;
+                }
+                
+                // 美化节点内容
+                nodeElement.innerHTML = `
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="node-badge ${badgeClass}">${typeBadge}</span>
+                        ${node.isFinal ? '<span class="node-badge bg-rose-100 text-rose-700">最终</span>' : ''}
+                    </div>
+                    <div class="node-title">节点${nodeId}</div>
+                `;
+
+                const currentNodeWidth = calculateNodeWidth(node);
+                const left = currentLeft + (currentNodeWidth - nodeWidth) / 2;
+                
+                nodeElement.style.left = `${left}px`;
+                nodeElement.style.top = `${top}px`;
+                container.appendChild(nodeElement);
+
+                // 添加点击事件，显示节点详情
+                nodeElement.addEventListener('click', function() {
+                    showNodeDetail(node.id);
+                });
+
+                if (node.father !== null) {
+                    const parentNode = document.getElementById(`node-${node.father}`);
+                    if (parentNode) {
+                        createConnector(container, parentNode, nodeElement);
+                    }
+                }
+
+                if (node.children.length > 0) {
+                    renderTree(container, node.children, level + 1, left + nodeWidth/2);
+                }
+
+                currentLeft += currentNodeWidth + horizontalGap;
+                
+                // 如果是最终解决方案，默认选中并显示详情
+                if (node.isFinal) {
+                    window.finalNodeId = node.id;
+                }
+            });
+        }
+        
+        // 修改 createConnector 函数，确保连接线正确定位
+        function createConnector(container, parentNode, childNode) {
+            const connector = document.createElement('div');
+            connector.className = 'connector';
+            
+            // 为连接线添加数据属性，以便后续更新
+            connector.setAttribute('data-parent-id', parentNode.id);
+            connector.setAttribute('data-child-id', childNode.id);
+            
+            // 获取父节点和子节点的位置
+            const parentLeft = parseInt(parentNode.style.left);
+            const parentTop = parseInt(parentNode.style.top);
+            const parentHeight = parentNode.offsetHeight;
+            
+            const childLeft = parseInt(childNode.style.left);
+            const childTop = parseInt(childNode.style.top);
+            
+            // 计算连接线的起点和终点
+            const startX = parentLeft + parentNode.offsetWidth / 2;
+            const startY = parentTop + parentHeight;
+            
+            const endX = childLeft + childNode.offsetWidth / 2;
+            const endY = childTop;
+            
+            // 计算长度和角度
+            const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+            const angle = Math.atan2(endY - startY, endX - startX);
+            
+            // 设置连接线样式
+            connector.style.width = `${length}px`;
+            connector.style.height = '2px';
+            connector.style.left = `${startX}px`;
+            connector.style.top = `${startY}px`;
+            connector.style.transform = `rotate(${angle}rad)`;
+            
+            // 将连接线添加到容器中
+            container.appendChild(connector);
+        }
+        
+        // 添加更新连接线位置的函数
+        function updateConnectors() {
+            const container = document.getElementById('tree-container');
+            const connectors = container.getElementsByClassName('connector');
+            
+            Array.from(connectors).forEach(connector => {
+                const parentId = connector.getAttribute('data-parent-id');
+                const childId = connector.getAttribute('data-child-id');
+                
+                const parentNode = document.getElementById(parentId);
+                const childNode = document.getElementById(childId);
+                
+                if (!parentNode || !childNode) return;
+                
+                // 获取父节点和子节点的位置
+                const parentLeft = parseInt(parentNode.style.left);
+                const parentTop = parseInt(parentNode.style.top);
+                const parentHeight = parentNode.offsetHeight;
+                
+                const childLeft = parseInt(childNode.style.left);
+                const childTop = parseInt(childNode.style.top);
+                
+                // 计算连接线的起点和终点
+                const startX = parentLeft + parentNode.offsetWidth / 2;
+                const startY = parentTop + parentHeight;
+                
+                const endX = childLeft + childNode.offsetWidth / 2;
+                const endY = childTop;
+                
+                // 计算长度和角度
+                const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+                const angle = Math.atan2(endY - startY, endX - startX);
+                
+                // 更新连接线样式
+                connector.style.width = `${length}px`;
+                connector.style.left = `${startX}px`;
+                connector.style.top = `${startY}px`;
+                connector.style.transform = `rotate(${angle}rad)`;
+            });
+        }
+        
+        // 修改 centerTree 函数，在移动节点后更新连接线
+        function centerTree() {
+            const container = document.getElementById('tree-container');
+            const nodes = container.getElementsByClassName('node');
+            if (nodes.length === 0) return;
+            
+            // 计算树的实际边界
+            let minX = Infinity, maxX = -Infinity;
+            let minY = Infinity, maxY = -Infinity;
+            
+            Array.from(nodes).forEach(node => {
+                const left = parseInt(node.style.left);
+                const top = parseInt(node.style.top);
+                const width = node.offsetWidth;
+                const height = node.offsetHeight;
+                
+                minX = Math.min(minX, left);
+                maxX = Math.max(maxX, left + width);
+                minY = Math.min(minY, top);
+                maxY = Math.max(maxY, top + height);
+            });
+            
+            // 计算树的中心
+            const treeWidth = maxX - minX;
+            const treeHeight = maxY - minY;
+            const treeCenterX = minX + treeWidth / 2;
+            
+            // 计算视口中心（考虑控制面板的宽度）
+            const controlsWidth = $('.controls').outerWidth() + 40; // 控制面板宽度加边距
+            const viewportWidth = window.innerWidth - controlsWidth;
+            const viewportCenterX = viewportWidth / 2;
+            
+            // 计算需要的水平偏移量
+            const offsetX = viewportCenterX - treeCenterX;
+            
+            // 应用偏移量到所有节点
+            Array.from(nodes).forEach(node => {
+                const currentLeft = parseInt(node.style.left);
+                node.style.left = `${currentLeft + offsetX}px`;
+            });
+            
+            // 更新连接线位置
+            updateConnectors();
+            
+            // 更新容器高度以适应内容
+            container.style.height = `${maxY + 100}px`; // 添加一些底部边距
+        }
+        
+        // 修改 initTree 函数，保留当前选中的节点
+        function initTree(data) {
+            // 保存当前选中的节点ID
+            const savedNodeId = currentNodeId;
+            
+            // 添加缩放控制
+            addZoomControls();
+            
+            // 重置缩放状态
+            currentZoom = 1;
+            $('#tree-container').css('transform', 'scale(1)');
+            
+            const container = $('#tree-container');
+            container.empty();
+            
+            const rootNodes = buildTree(data);
+            
+            if (rootNodes.length > 0) {
+                // 添加一个初始水平偏移量，确保树结构居中
+                const containerWidth = container.width();
+                renderTree(container[0], rootNodes, 0, containerWidth / 2);
+                
+                // 在树渲染完成后调整位置和缩放
+                setTimeout(() => {
+                    centerTree();
+                    autoFitTreeToScreen();
+                    
+                    // 如果有保存的节点ID，尝试恢复选中状态
+                    if (savedNodeId && document.getElementById(`node-${savedNodeId}`)) {
+                        // 高亮节点但不更新详情面板
+                        highlightNode(savedNodeId);
+                    } else if (window.finalNodeId) {
+                        // 如果没有保存的节点或找不到保存的节点，显示最终解决方案
+                        showNodeDetail(window.finalNodeId);
+                    } else {
+                        // 如果没有最终解决方案，显示根节点
+                        const rootNodeId = rootNodes[0].id;
+                        showNodeDetail(rootNodeId);
+                    }
+                }, 100);
+            } else {
+                container.html('<div class="text-center text-gray-500 mt-10">暂无数据</div>');
+            }
+        }
+        
+        // 添加自动适应屏幕的函数
+        function autoFitTreeToScreen() {
+            const container = document.getElementById('tree-container');
+            const nodes = container.getElementsByClassName('node');
+            if (nodes.length === 0) return;
+            
+            // 计算树的实际边界
+            let minX = Infinity, maxX = -Infinity;
+            let minY = Infinity, maxY = -Infinity;
+            
+            Array.from(nodes).forEach(node => {
+                const left = parseInt(node.style.left);
+                const top = parseInt(node.style.top);
+                const width = node.offsetWidth;
+                const height = node.offsetHeight;
+                
+                minX = Math.min(minX, left);
+                maxX = Math.max(maxX, left + width);
+                minY = Math.min(minY, top);
+                maxY = Math.max(maxY, top + height);
+            });
+            
+            // 计算树的尺寸
+            const treeWidth = maxX - minX + 100; // 添加边距
+            const treeHeight = maxY - minY + 100; // 添加边距
+            
+            // 计算可视区域尺寸（减去控制面板的宽度）
+            const controlsWidth = $('.controls').outerWidth() + 40; // 控制面板宽度加边距
+            const viewportWidth = window.innerWidth - controlsWidth;
+            const viewportHeight = window.innerHeight;
+            
+            // 计算需要的缩放比例
+            const scaleX = viewportWidth / treeWidth;
+            const scaleY = viewportHeight / treeHeight;
+            let scale = Math.min(scaleX, scaleY, 1); // 不超过原始大小
+            
+            // 设置最小缩放值
+            scale = Math.max(scale, 0.3);
+            
+            // 应用缩放
+            currentZoom = scale;
+            applyZoom(scale);
+            
+            // 更新容器高度以适应缩放后的内容
+            container.style.height = `${treeHeight}px`;
+        }
+
+        // 修改缩放控制，添加当前缩放百分比显示
+        function addZoomControls() {
+            // 如果已经存在缩放控制，则不重复添加
+            if ($('#zoom-controls').length > 0) return;
+            
+            const zoomControls = $(`
+                <div id="zoom-controls" class="fixed bottom-4 right-4 bg-white p-2 rounded-lg shadow-md flex items-center space-x-2">
+                    <span id="zoom-percent" class="text-sm font-medium text-gray-700 w-14 text-center">100%</span>
+                    <button id="zoom-in" class="bg-blue-500 text-white w-8 h-8 rounded-full hover:bg-blue-600 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <button id="zoom-out" class="bg-blue-500 text-white w-8 h-8 rounded-full hover:bg-blue-600 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 010 2H6a1 1 0 01-1-1z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <button id="zoom-reset" class="bg-gray-500 text-white w-8 h-8 rounded-full hover:bg-gray-600 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <button id="zoom-fit" class="bg-green-500 text-white w-8 h-8 rounded-full hover:bg-green-600 flex items-center justify-center" title="适应屏幕">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 01-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 010-2h1.586l-2.293-2.293a1 1 0 111.414-1.414L15 13.586V12a1 1 0 011-1z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <button id="zoom-center" class="bg-purple-500 text-white w-8 h-8 rounded-full hover:bg-purple-600 flex items-center justify-center" title="居中显示">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12zm0-6a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm0-4a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+            `);
+            
+            $('body').append(zoomControls);
+            
+            // 当前缩放级别
+            window.currentZoom = 1;
+            
+            // 缩放事件处理
+            $('#zoom-in').click(function() {
+                currentZoom += 0.1;
+                applyZoom(currentZoom);
+                // 在缩放后重新居中
+                centerTreeWithCurrentZoom();
+            });
+            
+            $('#zoom-out').click(function() {
+                currentZoom = Math.max(0.3, currentZoom - 0.1);
+                applyZoom(currentZoom);
+                // 在缩放后重新居中
+                centerTreeWithCurrentZoom();
+            });
+            
+            $('#zoom-reset').click(function() {
+                currentZoom = 1;
+                applyZoom(currentZoom);
+                // 在缩放后重新居中
+                centerTreeWithCurrentZoom();
+            });
+            
+            $('#zoom-fit').click(function() {
+                autoFitTreeToScreen();
+            });
+            
+            $('#zoom-center').click(function() {
+                centerTreeWithCurrentZoom();
+            });
+        }
+
+        // 应用缩放并更新显示
+        function applyZoom(scale) {
+            $('#tree-container').css('transform', `scale(${scale})`);
+            updateZoomControls();
+        }
+
+        // 更新缩放控制器显示
+        function updateZoomControls() {
+            // 更新缩放百分比显示
+            const zoomPercent = Math.round(currentZoom * 100);
+            $('#zoom-percent').text(`${zoomPercent}%`);
+        }
+
+        // 在当前缩放级别下居中树
+        function centerTreeWithCurrentZoom() {
+            // 先居中树
+            centerTree();
+            
+            // 调整容器的变换原点，使其在缩放时保持居中
+            const container = document.getElementById('tree-container');
+            container.style.transformOrigin = 'center top';
+        }
+        
+        // 添加新函数，用于调整树的位置
+        function adjustTreePosition(container) {
+            // 获取所有节点
+            const nodes = container.getElementsByClassName('node');
+            if (nodes.length === 0) return;
+            
+            // 计算树的实际边界
+            let minX = Infinity, maxX = -Infinity;
+            
+            Array.from(nodes).forEach(node => {
+                const left = parseInt(node.style.left);
+                const width = node.offsetWidth;
+                minX = Math.min(minX, left);
+                maxX = Math.max(maxX, left + width);
+            });
+            
+            // 如果最左侧节点位置小于0，则整体向右移动
+            if (minX < 50) {
+                const offset = 50 - minX;
+                Array.from(nodes).forEach(node => {
+                    const currentLeft = parseInt(node.style.left);
+                    node.style.left = `${currentLeft + offset}px`;
+                });
+                
+                // 更新连接线位置
+                updateConnectors();
+            }
+        }
+        
+        // 添加自动缩放函数
+        function adjustScale(container) {
+            // 获取所有节点
+            const nodes = container.getElementsByClassName('node');
+            if (nodes.length === 0) return;
+            
+            // 计算树的实际边界
+            let minX = Infinity, maxX = -Infinity;
+            let minY = Infinity, maxY = -Infinity;
+            
+            Array.from(nodes).forEach(node => {
+                const rect = node.getBoundingClientRect();
+                minX = Math.min(minX, rect.left);
+                maxX = Math.max(maxX, rect.right);
+                minY = Math.min(minY, rect.top);
+                maxY = Math.max(maxY, rect.bottom);
+            });
+            
+            // 计算需要的缩放比例
+            const padding = 40; // 边距
+            const scaleX = (window.innerWidth - padding * 2) / (maxX - minX);
+            const scaleY = (window.innerHeight - padding * 2) / (maxY - minY);
+            const scale = Math.min(scaleX, scaleY, 1); // 不超过原始大小
+            
+            // 应用缩放和居中
+            container.style.transform = `scale(${scale})`;
+            container.style.transformOrigin = 'center top';
+            container.style.height = ((maxY - minY) * scale + padding * 2) + 'px';
+        }
+        
+        // 添加防抖函数
+        function debounce(func, wait) {
+            let timeout;
+            return function() {
+                const context = this;
+                const args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    func.apply(context, args);
+                }, wait);
+            };
+        }
+
+        // 修改 fetchTreeData 函数，添加强制重绘参数
+        async function fetchTreeData(taskId, forceRedraw = false) {
+            if (taskId === undefined) return;
+            
+            try {
+                const response = await fetch(`/task/${taskId}`);
+                const taskData = await response.json();
+                
+                // 更新任务状态和进度
+                updateTaskStatus(taskData);
+                
+                // 如果有节点记录，更新树但保留当前选中的节点
+                if (taskData.result && taskData.result.nodes_record) {
+                    updateTreeWithNodes(taskData.result.nodes_record, forceRedraw);
+                }
+            } catch (error) {
+                console.error('Error fetching tree data:', error);
+            }
+        }
+        
+        // 添加一个新函数来更新任务状态
+        function updateTaskStatus(taskData) {
+            // 更新任务列表中的状态
+            const taskItem = $(`.task-item[data-task-id="${taskData.task_id}"]`);
+            if (taskItem.length) {
+                // 更新状态标签
+                const statusLabel = taskItem.find('.status-label');
+                statusLabel.text(taskData.status);
+                
+                // 更新进度条
+                const progressBar = taskItem.find('.progress-bar');
+                if (progressBar.length && taskData.progress !== undefined) {
+                    const percent = Math.round(taskData.progress * 100);
+                    progressBar.css('width', `${percent}%`);
+                    progressBar.removeClass('bg-blue-500 bg-green-500 bg-red-500 bg-gray-500');
+                    progressBar.addClass(getProgressBarColor(taskData.status));
+                }
+                
+                // 更新状态类
+                taskItem.removeClass('status-running status-completed status-failed');
+                taskItem.addClass(`status-${taskData.status}`);
+            }
+            
+            // 如果是当前选中的任务，更新提交按钮状态
+            if (currentTaskId === taskData.task_id) {
+                if (taskData.status === 'running' && taskData.progress !== undefined) {
+                    const percent = Math.round(taskData.progress * 100);
+                    $('#submit-query').prop('disabled', true).text(`处理中... ${percent}%`);
+                } else if (taskData.status === 'completed') {
+                    $('#submit-query').prop('disabled', false).text('提交查询');
+                } else if (taskData.status === 'failed') {
+                    $('#submit-query').prop('disabled', false).text('提交查询');
+                    alert('查询处理失败: ' + (taskData.result?.error || '未知错误'));
+                }
+            }
+        }
+        
+        // 修改 pollTaskStatus 函数，使用 fetchTreeData
+        async function pollTaskStatus(taskId) {
+            try {
+                await fetchTreeData(taskId);
+                
+                // 获取最新的任务状态
+                const taskItem = $(`.task-item[data-task-id="${taskId}"]`);
+                const status = taskItem.hasClass('status-completed') ? 'completed' : 
+                              taskItem.hasClass('status-failed') ? 'failed' : 'running';
+                
+                if (status === 'running') {
+                    // 继续轮询
+                    setTimeout(() => pollTaskStatus(taskId), 1000);
+                }
+            } catch (error) {
+                console.error('Error polling task status:', error);
+                $('#submit-query').prop('disabled', false).text('提交查询');
+            }
+        }
+        
+        // 修改 fetchAllTasks 函数，修复任务名称显示问题
+        async function fetchAllTasks() {
+            try {
+                const response = await fetch('/get_all_tasks');
+                const data = await response.json();
+                
+                if (data.tasks && data.tasks.length > 0) {
+                    // 更新任务列表
+                    const taskListHtml = data.tasks.map(task => {
+                        const isActive = task.task_id === currentTaskId ? 'active' : '';
+                        const statusClass = `status-${task.status}`;
+                        const percent = task.progress !== undefined ? Math.round(task.progress * 100) : 0;
+                        
+                        // 修复任务名称显示，确保显示查询内容而不是任务ID
+                        const taskName = task.query && task.query.trim() !== '' 
+                            ? task.query 
+                            : `任务 #${task.task_id}`;
+                        
+                        return `
+                            <div class="task-item ${isActive} ${statusClass}" data-task-id="${task.task_id}">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-sm truncate max-w-[180px]">${taskName}</span>
+                                    <span class="status-label text-xs px-2 py-1 rounded">${task.status}</span>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar ${getProgressBarColor(task.status)}" 
+                                         style="width: ${percent}%"></div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    $('#task-list').html(taskListHtml);
+                    
+                    // 绑定任务点击事件
+                    $('.task-item').click(function() {
+                        const taskId = $(this).data('task-id');
+                        selectTask(taskId);
+                    });
+                    
+                    // 如果当前没有选中任务，自动选择第一个
+                    if (currentTaskId === null && data.tasks.length > 0) {
+                        selectTask(data.tasks[0].task_id);
+                    }
+                } else {
+                    $('#task-list').html('<div class="p-4 text-center text-gray-500">暂无任务</div>');
+                }
+            } catch (error) {
+                console.error('Error fetching tasks:', error);
+            }
+        }
+        
+        // 选择任务
+        function selectTask(taskId) {
+            currentTaskId = taskId;
+            
+            // 更新UI
+            $('.task-item').removeClass('active');
+            $(`.task-item[data-task-id="${taskId}"]`).addClass('active');
+            
+            // 获取该任务的树数据
+            fetchTreeData(taskId);
+        }
+
+        // 提交查询并轮询任务状态
+        async function submitQuery(query) {
+            try {
+                // 禁用提交按钮，显示加载状态
+                $('#submit-query').prop('disabled', true).text('处理中...');
+                
+                // 提交查询，获取任务ID
+                const response = await fetch('/get_solution', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: query }),
+                });
+                
+                const taskData = await response.json();
+                console.log('Task started:', taskData);
+                
+                if (taskData.task_id !== undefined) {
+                    // 自动选择新创建的任务
+                    currentTaskId = taskData.task_id;
+                    
+                    // 刷新任务列表
+                    fetchAllTasks();
+                    
+                    // 开始轮询任务状态
+                    pollTaskStatus(taskData.task_id);
+                } else {
+                    console.error('Invalid task data:', taskData);
+                    $('#submit-query').prop('disabled', false).text('提交查询');
+                }
+            } catch (error) {
+                console.error('Error submitting query:', error);
+                $('#submit-query').prop('disabled', false).text('提交查询');
+            }
+        }
+        
+        // 修改 updateTreeWithNodes 函数，添加强制重绘参数
+        function updateTreeWithNodes(nodesRecord, forceRedraw = false) {
+            if (!nodesRecord) return;
+            
+            const treeNodes = [];
+            
+            for (const [nodeId, node] of Object.entries(nodesRecord)) {
+                let content = '';
+                let title = `${node.flag} ${node.my_id}`;
+                
+                if (node.flag === "In") {
+                    content = node.question;
+                } else if (node.flag === "So") {
+                    content = node.solution || "Processing...";
+                    if (node.if_final_used) {
+                        title += " (Final)";
+                    }
+                } else if (node.flag === "Re") {
+                    content = node.reflection || "Processing...";
+                }
+                
+                treeNodes.push({
+                    id: node.my_id,
+                    title: title,
+                    content: content,
+                    father: node.father_id !== undefined ? node.father_id : null,
+                    flag: node.flag,
+                    isFinal: node.if_final_used || false
+                });
+            }
+            
+            // 计算当前树结构的哈希值
+            const currentTreeHash = calculateTreeHash(treeNodes);
+            
+            // 如果哈希值与上次相同且不是强制重绘，说明树结构未变化，不需要重新绘制
+            if (lastTreeHash === currentTreeHash && !forceRedraw) {
+                console.log("树结构未变化，跳过重新绘制");
+                
+                // 更新节点内容，但不重新绘制树
+                updateNodesContent(treeNodes);
+                return;
+            }
+            
+            // 更新哈希值并重新绘制树
+            console.log("树结构已变化或强制重绘，重新绘制");
+            lastTreeHash = currentTreeHash;
+            window.treeData = treeNodes;
+            initTree(treeNodes);
+        }
+
+        // 修改 updateNodesContent 函数，确保更新当前选中节点的内容
+        function updateNodesContent(nodes) {
+            // 遍历所有节点，更新内容但不改变树结构
+            nodes.forEach(node => {
+                const nodeElement = document.getElementById(`node-${node.id}`);
+                if (nodeElement) {
+                    // 更新节点的数据属性
+                    nodeElement.setAttribute('data-node-content', node.content);
+                    nodeElement.setAttribute('data-is-final', node.isFinal);
+                    
+                    // 更新节点的最终解决方案标记
+                    if (node.isFinal) {
+                        nodeElement.classList.add('ring-2', 'ring-rose-500', 'ring-offset-2');
+                        window.finalNodeId = node.id;
+                    } else {
+                        nodeElement.classList.remove('ring-2', 'ring-rose-500', 'ring-offset-2');
+                    }
+                }
+            });
+            
+            // 如果有当前选中的节点，更新其内容
+            if (currentNodeId) {
+                const currentNode = nodes.find(node => node.id === currentNodeId);
+                if (currentNode) {
+                    updateDetailPanel(currentNode);
+                }
+            }
+        }
+
+        // 修改 updateDetailPanel 函数，改进标题显示
+        function updateDetailPanel(node) {
+            const nodeElement = document.getElementById(`node-${node.id}`);
+            if (!nodeElement) return;
+            
+            // 获取节点数据
+            const nodeType = nodeElement.getAttribute('data-node-type');
+            const nodeTitle = nodeElement.getAttribute('data-node-title');
+            const nodeId = nodeElement.getAttribute('data-node-id');
+            const isFinal = nodeElement.getAttribute('data-is-final') === 'true';
+            
+            // 更新详情面板
+            const detailTitle = document.getElementById('detail-title');
+            const detailType = document.getElementById('detail-type');
+            const detailContent = document.getElementById('detail-content');
+            
+            // 设置节点类型标签和友好的标题
+            let typeLabel = '';
+            let typeClass = '';
+            let friendlyTitle = '';
+            let titleClass = 'font-semibold';
+            
+            // 更新节点类型标签和标题
+            switch (nodeType) {
+                case 'In':
+                    typeLabel = '问题';
+                    typeClass = 'bg-blue-100 text-blue-700 ring-1 ring-blue-300';
+                    friendlyTitle = `问题 ${nodeId}`;
+                    titleClass += ' text-blue-700';
+                    break;
+                case 'So':
+                    typeLabel = '解决方案';
+                    typeClass = 'bg-green-100 text-green-700 ring-1 ring-green-300';
+                    friendlyTitle = `解决方案 ${nodeId}`;
+                    titleClass += ' text-green-700';
+                    break;
+                case 'Re':
+                    typeLabel = '反思';
+                    typeClass = 'bg-amber-100 text-amber-700 ring-1 ring-amber-300';
+                    friendlyTitle = `反思 ${nodeId}`;
+                    titleClass += ' text-amber-700';
+                    break;
+                default:
+                    typeLabel = '未知';
+                    typeClass = 'bg-gray-100 text-gray-700 ring-1 ring-gray-300';
+                    friendlyTitle = `节点 ${nodeId}`;
+                    titleClass += ' text-gray-700';
+            }
+            
+            // 如果是最终解决方案，更新标签和标题
+            if (isFinal) {
+                typeClass = 'bg-rose-100 text-rose-700 ring-1 ring-rose-300';
+                friendlyTitle = `最终${typeLabel}`;
+                typeLabel += ' (最终)';
+                titleClass = 'text-rose-700 font-bold';
+            }
+            
+            // 更新面板标题和类型标签
+            detailTitle.textContent = friendlyTitle;
+            detailTitle.className = `panel-title ${titleClass}`;
+            detailType.textContent = typeLabel;
+            detailType.className = `panel-type-badge ${typeClass} shadow-sm`;
+            
+            // 使用 Marked.js 渲染 Markdown
+            detailContent.innerHTML = renderMarkdown(node.content, nodeType, isFinal);
+            
+            // 应用代码高亮
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        }
+
+        // 修改 showNodeDetail 函数，确保传递正确的节点ID
+        function showNodeDetail(nodeId) {
+            // 移除之前选中节点的高亮
+            if (currentNodeId) {
+                const prevNode = document.getElementById(`node-${currentNodeId}`);
+                if (prevNode) {
+                    prevNode.classList.remove('active');
+                    prevNode.classList.remove('ring-2', 'ring-offset-2', 'ring-blue-500');
+                }
+            }
+            
+            // 更新当前选中的节点ID
+            currentNodeId = nodeId;
+            
+            // 获取节点元素
+            const nodeElement = document.getElementById(`node-${nodeId}`);
+            if (!nodeElement) return;
+            
+            // 高亮当前选中的节点
+            nodeElement.classList.add('active');
+            nodeElement.classList.add('ring-2', 'ring-offset-2', 'ring-blue-500');
+            
+            // 获取节点数据并更新详情面板
+            const nodeContent = nodeElement.getAttribute('data-node-content');
+            const nodeType = nodeElement.getAttribute('data-node-type');
+            const isFinal = nodeElement.getAttribute('data-is-final') === 'true';
+            
+            // 创建节点对象并更新详情面板
+            const node = {
+                id: nodeId,
+                content: nodeContent,
+                type: nodeType,
+                isFinal: isFinal === 'true'
+            };
+            
+            // 添加过渡效果
+            const detailPanel = document.getElementById('detail-panel');
+            detailPanel.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                updateDetailPanel(node);
+                detailPanel.classList.remove('opacity-0');
+            }, 150);
+        }
+        
+        function renderMarkdown(content, nodeType, isFinal) {
+            if (!content) return '<p class="text-gray-500 italic">无内容</p>';
+            
+            // 配置 Marked.js
+            marked.setOptions({
+                breaks: true,        // 允许换行
+                gfm: true,           // 使用 GitHub 风格的 Markdown
+                headerIds: true,     // 为标题添加 ID
+                mangle: false,       // 不转义标题中的内容
+                sanitize: false,     // 不过滤 HTML 标签
+                smartLists: true,    // 使用更智能的列表行为
+                smartypants: true,   // 使用更智能的标点符号
+                xhtml: false         // 不使用 XHTML 闭合标签
+            });
+            
+            // 渲染 Markdown
+            let renderedContent = marked.parse(content);
+            
+            // 根据节点类型添加不同的样式
+            let wrapperClass = '';
+            let borderClass = '';
+            
+            switch (nodeType) {
+                case 'In':
+                    wrapperClass = 'bg-blue-50';
+                    borderClass = 'border-l-4 border-blue-400';
+                    break;
+                case 'So':
+                    wrapperClass = 'bg-green-50';
+                    borderClass = 'border-l-4 border-green-400';
+                    break;
+                case 'Re':
+                    wrapperClass = 'bg-amber-50';
+                    borderClass = 'border-l-4 border-amber-400';
+                    break;
+            }
+            
+            // 如果是最终解决方案，添加特殊样式
+            if (isFinal) {
+                wrapperClass = 'bg-rose-50';
+                borderClass = 'border-l-4 border-rose-500';
+            }
+            
+            // 添加额外的CSS来确保段落正确显示
+            const additionalStyle = `
+                <style>
+                    .markdown-content p {
+                        margin-bottom: 1em;
+                    }
+                    .markdown-content ul, .markdown-content ol {
+                        margin-bottom: 1em;
+                    }
+                    .markdown-content li p {
+                        margin-bottom: 0.5em;
+                    }
+                    .markdown-content pre {
+                        margin-bottom: 1em;
+                        white-space: pre-wrap;
+                    }
+                </style>
+            `;
+            
+            return `${additionalStyle}<div class="p-4 rounded-lg shadow-inner ${wrapperClass} ${borderClass}">${renderedContent}</div>`;
+        }
+
+        // 添加高亮节点但不更新详情面板的函数
+        function highlightNode(nodeId) {
+            // 移除之前选中节点的高亮
+            if (currentNodeId && currentNodeId !== nodeId) {
+                const prevNode = document.getElementById(`node-${currentNodeId}`);
+                if (prevNode) {
+                    prevNode.classList.remove('active');
+                }
+            }
+            
+            // 更新当前选中的节点ID
+            currentNodeId = nodeId;
+            
+            // 获取节点元素
+            const nodeElement = document.getElementById(`node-${nodeId}`);
+            if (!nodeElement) return;
+            
+            // 高亮当前选中的节点
+            nodeElement.classList.add('active');
+        }
+
+        // 修改页面加载时的初始化代码
+        $(document).ready(function() {
+            // 初始获取任务列表
+            fetchAllTasks();
+            
+            // 提交查询按钮
+            $('#submit-query').click(function() {
+                const query = $('#query-input').val().trim();
+                if (query) {
+                    submitQuery(query);
+                }
+            });
+            
+            // 刷新任务列表按钮
+            $('#refresh-tasks').click(function() {
+                fetchAllTasks();
+            });
+            
+            // 刷新树按钮
+            $('#refresh-tree').click(function() {
+                if (currentTaskId !== null) {
+                    fetchTreeData(currentTaskId, true);
+                }
+            });
+            
+            // 回车提交查询
+            $('#query-input').keypress(function(e) {
+                if (e.which === 13) {
+                    const query = $(this).val().trim();
+                    if (query) {
+                        submitQuery(query);
+                    }
+                }
+            });
+            
+            // 全屏切换按钮
+            $('#toggle-fullscreen').click(function() {
+                const detailPanel = $('#detail-panel');
+                detailPanel.toggleClass('fullscreen');
+                
+                // 更新按钮图标
+                const isFullscreen = detailPanel.hasClass('fullscreen');
+                if (isFullscreen) {
+                    $(this).html(`
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.293 3.293a1 1 0 011.414 0L10 6.586l3.293-3.293a1 1 0 111.414 1.414L11.414 8l3.293 3.293a1 1 0 01-1.414 1.414L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 8 5.293 4.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    `);
+                    $(this).attr('title', '退出全屏');
+                } else {
+                    $(this).html(`
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 01-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 111.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 010-2h1.586l-2.293-2.293a1 1 0 111.414-1.414L15 13.586V12a1 1 0 011-1z" />
+                        </svg>
+                    `);
+                    $(this).attr('title', '切换全屏');
+                }
+            });
+            
+            // 最小化切换按钮
+            $('#toggle-minimize').click(function() {
+                const detailPanel = $('#detail-panel');
+                detailPanel.toggleClass('minimized');
+                
+                // 更新按钮图标
+                const isMinimized = detailPanel.hasClass('minimized');
+                if (isMinimized) {
+                    $(this).html(`
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                        </svg>
+                    `);
+                    $(this).attr('title', '展开');
+                    
+                    // 如果是全屏状态，保持全屏但应用最小化样式
+                    if (detailPanel.hasClass('fullscreen')) {
+                        detailPanel.addClass('fullscreen-minimized');
+                    }
+                } else {
+                    $(this).html(`
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                        </svg>
+                    `);
+                    $(this).attr('title', '最小化');
+                    
+                    // 移除全屏最小化标记
+                    detailPanel.removeClass('fullscreen-minimized');
+                }
+            });
+            
+            // 添加键盘快捷键支持
+            $(document).keydown(function(e) {
+                // ESC 键退出全屏
+                if (e.key === "Escape" && $('#detail-panel').hasClass('fullscreen')) {
+                    $('#toggle-fullscreen').click();
+                }
+                
+                // M 键切换最小化状态
+                if (e.key === "m" || e.key === "M") {
+                    $('#toggle-minimize').click();
+                }
+                
+                // F 键切换全屏状态
+                if (e.key === "f" || e.key === "F") {
+                    $('#toggle-fullscreen').click();
+                }
+            });
+        });
+
+        // 添加节点类型样式辅助函数
+        function getNodeTypeClasses(nodeType) {
+            switch (nodeType) {
+                case 'In':
+                    return 'bg-gradient-to-br from-blue-50 to-blue-100 border-l-4 border-blue-400 shadow-md hover:shadow-lg transition-shadow duration-300';
+                case 'So':
+                    return 'bg-gradient-to-br from-green-50 to-green-100 border-l-4 border-green-400 shadow-md hover:shadow-lg transition-shadow duration-300';
+                case 'Re':
+                    return 'bg-gradient-to-br from-amber-50 to-amber-100 border-l-4 border-amber-400 shadow-md hover:shadow-lg transition-shadow duration-300';
+                default:
+                    return 'bg-gradient-to-br from-gray-50 to-gray-100 border-l-4 border-gray-400 shadow-md hover:shadow-lg transition-shadow duration-300';
+            }
+        }
+
+        // 添加获取进度条颜色的函数
+        function getProgressBarColor(status) {
+            switch (status) {
+                case 'running':
+                    return 'bg-blue-500';
+                case 'completed':
+                    return 'bg-green-500';
+                case 'failed':
+                    return 'bg-red-500';
+                default:
+                    return 'bg-gray-500';
+            }
+        }
+    </script>
+</body>
+</html>
